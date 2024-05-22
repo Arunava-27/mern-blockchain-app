@@ -16,7 +16,7 @@ export const connectWallet = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum);
     const signer = await provider.getSigner();
 
-    const message = "Sign this message to prove that you own this account";
+    const message = "Sign this message to prove that you own this account"; // put in dotenv file
     const signature = await signer.signMessage(message);
     console.log(signature);
 
@@ -24,8 +24,11 @@ export const connectWallet = async () => {
         signature
     }
 
-    const res = await axios.post("http://localhost:5000/auth", dataSinature);
+    const url = `http://localhost:3000/api/auth?address=${selectedAccount}`
+    const res = await axios.post(url, dataSinature);
     
+    console.log(res.data);
+
     const contactAddress = "0xB2B3c06C7b4D68b34A39FF8015B1F7517296dadF";
     const contractInstance = new ethers.Contract(
       contactAddress,
